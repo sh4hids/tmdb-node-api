@@ -1,26 +1,26 @@
 import { Model } from 'sequelize';
 
 export default (sequelize, DataTypes) => {
-  class Todo extends Model {
+  class Genre extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    // eslint-disable-next-line no-unused-vars
+    /* eslint-disable no-unused-vars */
     static associate(models) {
       // define association here
     }
   }
-  Todo.init(
+  Genre.init(
     {
-      task: DataTypes.STRING,
-      isCompleted: DataTypes.BOOLEAN,
+      tmdb_id: DataTypes.INTEGER,
+      name: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: 'Todo',
+      modelName: 'Genre',
     }
   );
-  return Todo;
+  return Genre;
 };

@@ -1,17 +1,17 @@
 export default {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Todos', {
+    await queryInterface.createTable('Genres', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      task: {
-        type: Sequelize.STRING,
+      tmdb_id: {
+        type: Sequelize.INTEGER,
       },
-      isCompleted: {
-        type: Sequelize.BOOLEAN,
+      name: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -23,8 +23,8 @@ export default {
       },
     });
   },
-  // eslint-disable-next-line no-unused-vars
+  /* eslint-disable no-unused-vars */
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Todos');
+    await queryInterface.dropTable('Genres');
   },
 };

@@ -1,56 +1,56 @@
 import models from '../models';
 
-const { Todo } = models;
+const { Genre } = models;
 
 async function create(ctx) {
   const data = ctx.request.body;
 
-  const task = await Todo.create(data);
+  const genre = await Genre.create(data);
 
   ctx.response.success({
-    data: task,
+    data: genre,
     status: 201,
-    message: 'Task created successfully',
+    message: 'Genre created successfully',
   });
 }
 
 async function getById(ctx) {
   const { id } = ctx.request.params;
 
-  const task = await Todo.findOne({
+  const genre = await Genre.findOne({
     where: {
       id,
     },
   });
 
-  if (!task) {
-    ctx.throw(404, 'Task not found');
+  if (!genre) {
+    ctx.throw(404, 'Genre not found');
   }
 
   ctx.response.success({
-    data: task,
-    message: 'Task fetched successfully',
+    data: genre,
+    message: 'Genre fetched successfully',
   });
 }
 
 async function getAll(ctx) {
-  const tasks = await Todo.findAll();
+  const genres = await Genre.findAll();
 
   ctx.response.success({
-    data: tasks,
-    message: 'Tasks fetched successfully',
+    data: genres,
+    message: 'Genres fetched successfully',
   });
 }
 
 async function remove(ctx) {
   const { id } = ctx.request.params;
 
-  await Todo.destroy({ where: { id } });
+  await Genre.destroy({ where: { id } });
 
   ctx.response.success({
     data: null,
     status: 204,
-    message: 'Task deleted successfully',
+    message: 'Genre deleted successfully',
   });
 }
 
