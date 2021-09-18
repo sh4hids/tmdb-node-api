@@ -51,3 +51,4 @@ export const tmdbApiUrl = process.env.TMDB_API_URL;
 export const tmdbApiKey = process.env.TMDB_API_KEY;
 
 export const ignoredSequelizeModels = ['Tmdb'];
+export const pageSize = 20;

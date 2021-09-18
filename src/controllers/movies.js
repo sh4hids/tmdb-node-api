@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 
+import { pageSize } from '../config';
 import models from '../models';
 
 const { Movie } = models;
@@ -38,14 +39,14 @@ async function getById(ctx) {
 async function getAll(ctx) {
   const {
     page = 1,
-    limit = 20,
+    limit = pageSize,
     startDate,
     endDate,
     sortBy = 'release_date.desc',
   } = ctx.query;
 
   const currentPage = Number(page);
-  const offset = (currentPage - 1) * limit;
+  const offset = (currentPage - 1) * Number(limit);
   const filters = {
     ...(startDate && {
       release_date: {
