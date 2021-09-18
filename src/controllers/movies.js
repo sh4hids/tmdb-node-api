@@ -1,3 +1,5 @@
+import Sequelize from 'sequelize';
+
 import models from '../models';
 
 const { Movie } = models;
@@ -34,10 +36,55 @@ async function getById(ctx) {
 }
 
 async function getAll(ctx) {
-  const movies = await Movie.findAll();
+  const {
+    page = 1,
+    limit = 20,
+    startDate,
+    endDate,
+    sortBy = 'release_date.desc',
+  } = ctx.query;
+
+  const currentPage = Number(page);
+  const offset = (currentPage - 1) * limit;
+  const filters = {
+    ...(startDate && {
+      release_date: {
+        [Sequelize.Op.gte]: startDate,
+      },
+    }),
+    ...(endDate && {
+      release_date: {
+        [Sequelize.Op.lte]: endDate,
+      },
+    }),
+    ...(startDate &&
+      endDate && {
+        release_date: {
+          [Sequelize.Op.gte]: startDate,
+          [Sequelize.Op.lte]: endDate,
+        },
+      }),
+  };
+
+  const [key, direction] = sortBy.split('.');
+  const order = [[key, direction.toUpperCase()]];
+
+  const { count, rows } = await Movie.findAndCountAll({
+    where: { ...filters },
+    limit,
+    offset,
+    order,
+  });
+
+  const totalPages = Math.ceil(count / limit);
 
   ctx.response.success({
-    data: movies,
+    data: {
+      page: currentPage,
+      totalPages,
+      totalResults: count,
+      results: rows,
+    },
     message: 'Movies fetched successfully',
   });
 }

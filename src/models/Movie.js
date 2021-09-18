@@ -26,7 +26,7 @@ export default (sequelize, DataTypes) => {
       release_date: DataTypes.DATEONLY,
       title: DataTypes.STRING,
       video: DataTypes.BOOLEAN,
-      vote_average: DataTypes.DECIMAL,
+      vote_average: DataTypes.DECIMAL(10, 2),
       vote_count: DataTypes.INTEGER,
       budget: DataTypes.INTEGER,
       belongs_to_collection: DataTypes.JSON,

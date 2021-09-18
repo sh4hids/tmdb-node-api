@@ -45,7 +45,7 @@ export default {
         type: Sequelize.BOOLEAN,
       },
       vote_average: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(10, 2),
       },
       vote_count: {
         type: Sequelize.INTEGER,
