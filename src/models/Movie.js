@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
       adult: DataTypes.BOOLEAN,
       backdrop_path: DataTypes.STRING,
       genre_ids: DataTypes.JSON,
-      tmdb_id: DataTypes.INTEGER,
+      tmdb_id: { type: DataTypes.INTEGER, unique: true },
       original_language: DataTypes.STRING,
       original_title: DataTypes.STRING,
       overview: DataTypes.TEXT,

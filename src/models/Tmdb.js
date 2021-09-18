@@ -44,7 +44,7 @@ async function getGenres() {
     };
 
     const response = await axios.get(
-      `${tmdbApiUrl}/genre/movie/list/?${qs.stringify(queries)}`
+      `${tmdbApiUrl}/genre/movie/list?${qs.stringify(queries)}`
     );
     return response.data;
   } catch (error) {

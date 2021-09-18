@@ -18,6 +18,7 @@ export default {
       },
       tmdb_id: {
         type: Sequelize.INTEGER,
+        unique: true,
       },
       original_language: {
         type: Sequelize.STRING,

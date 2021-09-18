@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
   }
   Genre.init(
     {
-      tmdb_id: DataTypes.INTEGER,
+      tmdb_id: { type: DataTypes.INTEGER, unique: true },
       name: DataTypes.STRING,
     },
     {

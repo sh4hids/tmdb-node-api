@@ -9,6 +9,7 @@ export default {
       },
       tmdb_id: {
         type: Sequelize.INTEGER,
+        unique: true,
       },
       name: {
         type: Sequelize.STRING,
