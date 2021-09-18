@@ -20,11 +20,13 @@
     "lint-staged": "lint-staged",
     "prepare": "husky install",
     "db:migrate": "sequelize db:migrate",
-    "db:migrate:undo": "sequelize db:migrate:undo"
+    "db:migrate:undo": "sequelize db:migrate:undo",
+    "sync-data": "node ./data/index.js"
   },
   "author": "Shahidul Islam Majumder <hello@shahid.pro>",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.21.4",
     "date-fns": "^2.24.0",
     "dotenv": "^10.0.0",
     "koa": "^2.13.1",
@@ -33,7 +35,9 @@
     "koa-router": "^10.1.1",
     "koa2-cors": "^2.0.6",
     "mysql2": "^2.3.0",
+    "node-cron": "^3.0.0",
     "pino": "^6.13.2",
+    "query-string": "^7.0.1",
     "sequelize": "^6.6.5",
     "uuid": "^8.3.2"
   },

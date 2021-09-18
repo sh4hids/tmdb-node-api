@@ -47,4 +47,7 @@ export const statusCodeMessages = {
   504: 'Gateway Timeout',
 };
 
-export const PROTECTED_ATTRIBUTES = ['password'];
+export const tmdbApiUrl = process.env.TMDB_API_URL;
+export const tmdbApiKey = process.env.TMDB_API_KEY;
+
+export const ignoredSequelizeModels = ['Tmdb'];
