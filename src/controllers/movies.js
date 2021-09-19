@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 import { pageSize } from '../config';
 import models from '../models';
 
-const { Movie } = models;
+const { Movie, Genre } = models;
 
 async function create(ctx) {
   const data = ctx.request.body;
@@ -20,7 +20,7 @@ async function create(ctx) {
 async function getById(ctx) {
   const { id } = ctx.request.params;
 
-  const movie = await Movie.findOne({
+  let movie = await Movie.findOne({
     where: {
       id,
     },
@@ -29,6 +29,16 @@ async function getById(ctx) {
   if (!movie) {
     ctx.throw(404, 'Movie not found');
   }
+
+  movie = JSON.parse(JSON.stringify(movie));
+
+  const genres = await Genre.findAll();
+
+  movie.genres = movie.genre_ids.map((genreId) =>
+    genres.find((item) => item.tmdb_id === genreId)
+  );
+
+  delete movie.genre_ids;
 
   ctx.response.success({
     data: movie,
