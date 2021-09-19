@@ -3,11 +3,11 @@
 ### Clone and prepare kit
 
 ```bash
-git clone git@github.com:sh4hids/api-starter-kits.git -b koa-general
+git clone git@github.com:sh4hids/tmdb-node-api.git
 ```
 
 ```bash
-cd api-starter-kits
+cd tmdb-node-api
 ```
 
 ```bash
@@ -17,6 +17,8 @@ rm -rf .git
 ```bash
 git init
 ```
+
+Provide necessary values in your `.env`
 
 ```bash
 cp .env.dev .env
@@ -50,4 +52,18 @@ npm run build
 
 ```bash
 npm start
+```
+
+## Sync Data
+
+Run the followin cammand to sync data:
+
+```
+npm run sync-data
+```
+
+If you want to run daily add `cronSchedule` in cli args
+
+```
+npm run sync-data -- --cronSchedule='0 0 * * *'
 ```
