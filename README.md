@@ -1,4 +1,4 @@
-# Koa Starter Kit (General)
+# TMDB Node
 
 ### Clone and prepare kit
 
@@ -24,10 +24,18 @@ Provide necessary values in your `.env`
 cp .env.dev .env
 ```
 
+
+
 ### Install dependencies
 
 ```bash
 npm i
+```
+
+### Create db tables
+
+```bash
+npm run db:migrate
 ```
 
 ### Add git hook
