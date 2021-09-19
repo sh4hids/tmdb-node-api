@@ -1,14 +1,20 @@
+/* eslint-disable camelcase */
 import { subDays, format } from 'date-fns';
 import minimist from 'minimist';
 import cron from 'node-cron';
 
 import models from '../../src/models';
-import { getMovies, getGenres } from '../../src/models/Tmdb';
+import {
+  getMovies,
+  getGenres,
+  getMovieDetails,
+  getMovieCredits,
+} from '../../src/models/Tmdb';
 
 const { Movie, Genre } = models;
 
 const args = minimist(process.argv.slice(2));
-const cronSchedule = args.cronSchedule || '0 0 * * *'; // daily at midnight
+const { cronSchedule } = args; // daily at midnight
 
 const now = new Date();
 const endDate = args.startDate || format(now, 'yyyy-MM-dd');
@@ -20,13 +26,7 @@ console.log({
   cronSchedule,
 });
 
-function addMovieDataToDB(data = {}) {
-  const movies = data.results.map(({ id, ...otherProps }) => ({
-    tmdb_id: id,
-    ...otherProps,
-  }));
-
-  console.log(`Adding movie data for page: ${data.page} (${movies.length})`);
+function addMovieDataToDB(movies = []) {
   Movie.bulkCreate(movies, {
     updateOnDuplicate: ['tmdb_id'],
   });
@@ -39,9 +39,40 @@ async function loadMovieData(page = 1) {
     'primary_release_date.lte': endDate,
   };
 
+  const promises = [];
+  const movies = [];
+
   const data = await getMovies(filters);
 
-  addMovieDataToDB(data);
+  data.results.forEach((movie) => {
+    promises.push(getMovieDetails(movie.id));
+    promises.push(getMovieCredits(movie.id));
+  });
+
+  const values = await Promise.allSettled(promises);
+
+  // eslint-disable-next-line prefer-destructuring
+  for (let i = 0, length = values.length; i < length; i += 2) {
+    const details = values[i];
+    const credits = values[i + 1];
+
+    if (details.status === 'fulfilled') {
+      const tmdb_id = details.value.id;
+      const movieSummary =
+        data.results.find((item) => item.id === tmdb_id) || {};
+      const movie = { tmdb_id, ...details.value, ...movieSummary };
+
+      if (credits.status === 'fulfilled') {
+        movie.credits = credits.value;
+      }
+
+      delete movie.id;
+
+      movies.push(movie);
+    }
+  }
+
+  addMovieDataToDB(movies);
 
   if (data.total_pages > data.page) {
     return loadMovieData(data.page + 1);
@@ -65,8 +96,13 @@ async function loadGenreData() {
   });
 }
 
-// daily: 0 0 * * *
-cron.schedule(cronSchedule, () => {
-  loadMovieData();
+// for daily use: 0 0 * * *
+if (cronSchedule) {
+  cron.schedule(cronSchedule, () => {
+    loadMovieData();
+    loadGenreData();
+  });
+} else {
   loadGenreData();
-});
+  loadMovieData();
+}

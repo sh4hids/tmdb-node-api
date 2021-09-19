@@ -77,6 +77,9 @@ export default {
       spoken_languages: {
         type: Sequelize.JSON,
       },
+      credits: {
+        type: Sequelize.JSON,
+      },
       status: {
         type: Sequelize.STRING,
       },

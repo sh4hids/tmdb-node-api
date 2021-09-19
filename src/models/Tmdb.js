@@ -37,6 +37,22 @@ async function getMovieDetails(id) {
   }
 }
 
+async function getMovieCredits(id) {
+  try {
+    const queries = {
+      api_key: tmdbApiKey,
+    };
+
+    const response = await axios.get(
+      `${tmdbApiUrl}/movie/${id}/credits?${qs.stringify(queries)}`
+    );
+    return response.data;
+  } catch (error) {
+    logger.error(error);
+    return {};
+  }
+}
+
 async function getGenres() {
   try {
     const queries = {
@@ -53,4 +69,4 @@ async function getGenres() {
   }
 }
 
-export { getMovies, getMovieDetails, getGenres };
+export { getMovies, getMovieDetails, getMovieCredits, getGenres };

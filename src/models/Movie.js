@@ -37,6 +37,7 @@ export default (sequelize, DataTypes) => {
       revenue: DataTypes.INTEGER,
       runtime: DataTypes.INTEGER,
       spoken_languages: DataTypes.JSON,
+      credits: DataTypes.JSON,
       status: DataTypes.STRING,
       tagline: DataTypes.STRING,
     },
